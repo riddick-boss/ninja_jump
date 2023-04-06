@@ -1,4 +1,4 @@
-# ninja_jump
+# blob_jump
 
 A new Flutter project.
 
