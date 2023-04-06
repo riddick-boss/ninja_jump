@@ -4,6 +4,7 @@ import 'package:ninja_jump/ninja.dart';
 
 void main() {
   runApp(const MyApp());
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
   SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft]);
 }
 
@@ -86,9 +87,7 @@ class _MainPageState extends State<MainPage>
     return Scaffold(
       body: GestureDetector(
         behavior: HitTestBehavior.translucent,
-        onTap: () {
-          // ninja.jump();
-        },
+        onTap: ninja.jump,
         child: Stack(
           alignment: Alignment.center,
           children: children,
