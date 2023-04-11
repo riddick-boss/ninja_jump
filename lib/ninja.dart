@@ -13,21 +13,12 @@ class Ninja extends GameObject {
 
   Color color = Colors.blue;
 
-  double _calculateTop(Size screenSize, double runDistance) {
+  double _calculateTop(Size screenSize) {
     const boundArea = 0.05;
     final topBound = screenSize.height * boundArea;
     final usableArea = screenSize.height * (1 - boundArea * 2) - height;
 
     return topBound + usableArea * positionY;
-
-    // if(positionY == 0) {
-    //   calculatedY = screenSize.height / 2;
-    // } else if(positionY > 0) {
-    //   calculatedY = (screenSize.height /2) - (screenSize.height / 2) * positionY;
-    // } else {
-    //   calculatedY = (screenSize.height /2) - (screenSize.height / 2) * positionY - height;
-    // }
-    // return calculatedY;
   }
 
   @override
@@ -40,7 +31,7 @@ class Ninja extends GameObject {
   @override
   Rect getRect(Size screenSize, double runDistance) => Rect.fromLTWH(
         screenSize.width / 10,
-        _calculateTop(screenSize, runDistance),
+        _calculateTop(screenSize),
         width,
         height,
       );
@@ -61,17 +52,35 @@ class Ninja extends GameObject {
   }
 
   void jump() {
-    if (velocityY != 0) {
-      velocityY = -velocityY;
+    final isMoving = velocityY != 0;
+    if (isMoving) {
+      _changeMovementDirection();
       return;
     }
 
-    if (positionY > 0) {
-      velocityY = -movementSpeed;
+    final isOnBottom = positionY <= 0;
+    if (isOnBottom) {
+      _moveUp();
       return;
     }
 
+    _moveDown();
+  }
+
+  void die() {
+    color = Colors.green;
+  }
+
+  void _changeMovementDirection() {
+    velocityY = -velocityY;
+  }
+
+  void _moveUp() {
     velocityY = movementSpeed;
+  }
+
+  void _moveDown() {
+    velocityY = -movementSpeed;
   }
 
   void _updateColor(Duration elapsedTime) {

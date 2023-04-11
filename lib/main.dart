@@ -1,6 +1,9 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ninja_jump/ninja.dart';
+import 'package:ninja_jump/obstacle.dart';
 
 void main() {
   runApp(const MyApp());
@@ -34,7 +37,12 @@ class _MainPageState extends State<MainPage>
     with SingleTickerProviderStateMixin {
   late AnimationController worldController;
 
+  double runDistance = 0;
+  double runVelocity = 30;
   Duration lastUpdateCall = Duration.zero;
+  List<Obstacle> obstacleList = [
+    Obstacle(positionY: 0, location: const Offset(200, 0))
+  ];
 
   final ninja = Ninja();
   final foreverDuration = const Duration(days: 99);
@@ -52,12 +60,47 @@ class _MainPageState extends State<MainPage>
       ..forward();
   }
 
-  void _update() {
-    final controllerLastElapsed =
-        worldController.lastElapsedDuration ?? lastUpdateCall;
-    ninja.update(lastUpdateCall, controllerLastElapsed);
+  void _die() {
+    setState(() {
+      worldController.stop();
+      ninja.die();
+    });
+  }
 
-    lastUpdateCall = controllerLastElapsed;
+  void _update() {
+    final worldControllerElapsed = worldController.lastElapsedDuration ?? Duration.zero;
+
+    ninja.update(lastUpdateCall, worldControllerElapsed);
+
+    final elapsedSeconds = (worldControllerElapsed - lastUpdateCall).inMilliseconds / 1000;
+
+    runDistance += runVelocity * elapsedSeconds;
+
+    final screenSize = MediaQuery.of(context).size;
+    final ninjaRect = ninja.getRect(screenSize, runDistance);
+
+    for (final obstacle in obstacleList) {
+      final obstacleRect = obstacle.getRect(screenSize, runDistance);
+
+      if(ninjaRect.overlaps(obstacleRect)) {
+        _die();
+      }
+
+      if (obstacleRect.right < 0) {
+        setState(() {
+          obstacleList
+            ..remove(obstacle)
+            ..add(
+              Obstacle(
+                positionY: Random().nextDouble(),
+                location: Offset(runDistance + Random().nextInt(100) + 50, 0),
+              ),
+            );
+        });
+      }
+    }
+
+    lastUpdateCall = worldControllerElapsed;
   }
 
   @override
@@ -66,12 +109,12 @@ class _MainPageState extends State<MainPage>
         MediaQuery.of(context).size; // TODO: can it be moved to top?
     final children = <Widget>[];
 
-    for (final gameObject in [ninja]) {
+    for (final gameObject in [...obstacleList, ninja]) {
       children.add(
         AnimatedBuilder(
           animation: worldController,
           builder: (context, _) {
-            final rect = gameObject.getRect(screenSize, 0);
+            final rect = gameObject.getRect(screenSize, runDistance);
             return Positioned(
               left: rect.left,
               top: rect.top,

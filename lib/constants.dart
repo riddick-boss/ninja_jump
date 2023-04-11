@@ -1,0 +1,1 @@
+const int WORLD_TO_PIXEL_RATIO = 15; //TODO
