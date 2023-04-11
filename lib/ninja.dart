@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ninja_jump/constants.dart';
 import 'package:ninja_jump/game_object.dart';
 
 enum NinjaState { running, jumping }
@@ -14,7 +15,7 @@ class Ninja extends GameObject {
   Color color = Colors.blue;
 
   double _calculateTop(Size screenSize) {
-    const boundArea = 0.05;
+    final boundArea = Constants.boundArea;
     final topBound = screenSize.height * boundArea;
     final usableArea = screenSize.height * (1 - boundArea * 2) - height;
 

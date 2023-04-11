@@ -72,7 +72,7 @@ class _MainPageState extends State<MainPage>
 
     ninja.update(lastUpdateCall, worldControllerElapsed);
 
-    final elapsedSeconds = (worldControllerElapsed - lastUpdateCall).inMilliseconds / 1000;
+    final elapsedSeconds = (worldControllerElapsed - lastUpdateCall).inMilliseconds / 1000; //TODO: check why using inSeconds is not working here
 
     runDistance += runVelocity * elapsedSeconds;
 
@@ -105,8 +105,7 @@ class _MainPageState extends State<MainPage>
 
   @override
   Widget build(BuildContext context) {
-    final screenSize =
-        MediaQuery.of(context).size; // TODO: can it be moved to top?
+    final screenSize = MediaQuery.of(context).size;
     final children = <Widget>[];
 
     for (final gameObject in [...obstacleList, ninja]) {

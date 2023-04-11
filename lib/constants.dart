@@ -1,1 +1,4 @@
-const int WORLD_TO_PIXEL_RATIO = 15; //TODO
+class Constants {
+  static int worldToPixelRatio = 15;
+  static int boundArea = 15;
+}

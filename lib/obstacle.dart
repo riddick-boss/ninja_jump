@@ -29,7 +29,7 @@ class Obstacle extends GameObject {
   }
 
   double _calculateX(double runDistance) {
-    return (location.dx - runDistance) * WORLD_TO_PIXEL_RATIO;
+    return (location.dx - runDistance) * Constants.worldToPixelRatio;
   }
 
   @override
