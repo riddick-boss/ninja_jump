@@ -9,16 +9,11 @@ class Obstacle extends GameObject {
   double positionY;
   double offsetX;
 
-  final double width = 20;
-  final double height = 20;
-  Color color = Colors.orangeAccent;
+  final double width = 35;
+  final double height = 35;
 
   @override
-  Widget render() => Container(
-    width: width,
-    height: height,
-    color: color,
-  );
+  Widget render() => Image.asset("assets/graphics/ninja_star.png");
 
   double _calculateTop(Size screenSize) {
     const boundArea = 0.05;

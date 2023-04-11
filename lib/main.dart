@@ -101,12 +101,24 @@ class _MainPageState extends State<MainPage>
     }
 
     lastUpdateCall = worldControllerElapsed;
+    if(elapsedSeconds != 0 && elapsedSeconds % 10 == 0) {
+      runVelocity += 30;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-    final children = <Widget>[];
+    final children = <Widget>[
+      Container(
+        color: Colors.blueAccent,
+      ),
+      Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(image: AssetImage("assets/graphics/Mountains-Transparent.png"), fit: BoxFit.cover,),
+        ),
+      )
+    ];
 
     for (final gameObject in [...obstacleList, ninja]) {
       children.add(
