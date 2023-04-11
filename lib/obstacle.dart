@@ -4,10 +4,10 @@ import 'package:ninja_jump/game_object.dart';
 
 class Obstacle extends GameObject {
 
-  Obstacle({required this.positionY, required this.location});
+  Obstacle({required this.positionY, required this.offsetX});
 
   double positionY;
-  Offset location;
+  double offsetX;
 
   final double width = 20;
   final double height = 20;
@@ -29,7 +29,7 @@ class Obstacle extends GameObject {
   }
 
   double _calculateX(double runDistance) {
-    return (location.dx - runDistance) * Constants.worldToPixelRatio;
+    return (offsetX - runDistance) * Constants.worldToPixelRatio;
   }
 
   @override

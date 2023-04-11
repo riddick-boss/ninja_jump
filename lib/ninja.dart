@@ -7,7 +7,7 @@ enum NinjaState { running, jumping }
 class Ninja extends GameObject {
   final double width = 20;
   final double height = 20;
-  final movementSpeed = 1.5;
+  final movementSpeed = 1.15;
 
   double positionY = 0;
   double velocityY = 0;

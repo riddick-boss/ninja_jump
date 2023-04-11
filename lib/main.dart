@@ -41,7 +41,7 @@ class _MainPageState extends State<MainPage>
   double runVelocity = 30;
   Duration lastUpdateCall = Duration.zero;
   List<Obstacle> obstacleList = [
-    Obstacle(positionY: 0, location: const Offset(200, 0))
+    Obstacle(positionY: Random().nextDouble(), offsetX: 200)
   ];
 
   final ninja = Ninja();
@@ -93,7 +93,7 @@ class _MainPageState extends State<MainPage>
             ..add(
               Obstacle(
                 positionY: Random().nextDouble(),
-                location: Offset(runDistance + Random().nextInt(100) + 50, 0),
+                offsetX: runDistance + Random().nextInt(100) + 50,
               ),
             );
         });
