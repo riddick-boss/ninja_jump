@@ -13,7 +13,7 @@ class Obstacle extends GameObject {
   final double height = 35;
 
   @override
-  Widget render() => Image.asset("assets/graphics/ninja_star.png");
+  Widget render() => Image.asset("assets/graphics/ninja_star.jpg");
 
   double _calculateTop(Size screenSize) {
     const boundArea = 0.05;
