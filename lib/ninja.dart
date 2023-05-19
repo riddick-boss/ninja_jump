@@ -8,7 +8,7 @@ class Ninja extends GameObject {
   static const double _initialPositionY = 0;
   static const double _initialVelocityY = 0;
 
-  final double width = 70;
+  final double width = 60;
   final double height = 50;
   final movementSpeed = 1.15;
 
