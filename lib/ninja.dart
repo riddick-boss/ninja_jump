@@ -5,14 +5,15 @@ import 'package:ninja_jump/game_object.dart';
 enum NinjaState { running, jumping }
 
 class Ninja extends GameObject {
+  static const double _initialPositionY = 0;
+  static const double _initialVelocityY = 0;
+
   final double width = 70;
   final double height = 50;
   final movementSpeed = 1.15;
 
-  double positionY = 0;
-  double velocityY = 0;
-
-  Color color = Colors.blue;
+  double positionY = _initialPositionY;
+  double velocityY = _initialVelocityY;
 
   double _calculateTop(Size screenSize) {
     final boundArea = Constants.boundArea;
@@ -38,7 +39,6 @@ class Ninja extends GameObject {
 
   @override
   void update(Duration lastUpdate, Duration elapsedTime) {
-    _updateColor(elapsedTime);
 
     final elapsedSeconds = (elapsedTime - lastUpdate).inMilliseconds / 1000;
     positionY += velocityY * elapsedSeconds;
@@ -67,8 +67,9 @@ class Ninja extends GameObject {
     _moveDown();
   }
 
-  void die() {
-    color = Colors.green;
+  void restart() {
+    positionY = _initialPositionY;
+    velocityY = _initialVelocityY;
   }
 
   void _changeMovementDirection() {
@@ -81,26 +82,5 @@ class Ninja extends GameObject {
 
   void _moveDown() {
     velocityY = -movementSpeed;
-  }
-
-  void _updateColor(Duration elapsedTime) {
-    final colorCode = (elapsedTime.inMilliseconds / 500).floor() % 2;
-    switch (colorCode) {
-      case 0:
-        {
-          color = Colors.blue;
-          break;
-        }
-      case 1:
-        {
-          color = Colors.red;
-          break;
-        }
-      default:
-        {
-          color = Colors.black;
-          break;
-        }
-    }
   }
 }

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ninja_jump/constants.dart';
 import 'package:ninja_jump/counter.dart';
+import 'package:ninja_jump/game_over_container.dart';
 import 'package:ninja_jump/ninja.dart';
 import 'package:ninja_jump/obstacle.dart';
 
@@ -46,6 +47,7 @@ class _MainPageState extends State<MainPage>
   List<Obstacle> obstacleList = [
     Obstacle(positionY: Random().nextDouble(), offsetX: 200)
   ];
+  bool showRestart = false;
 
   final ninja = Ninja();
   final foreverDuration = const Duration(days: 99);
@@ -65,8 +67,8 @@ class _MainPageState extends State<MainPage>
 
   void _die() {
     setState(() {
+      showRestart = true;
       worldController.stop();
-      ninja.die();
     });
   }
 
@@ -92,7 +94,10 @@ class _MainPageState extends State<MainPage>
         _die();
       }
 
-      if (obstacleRect.right < Random().nextInt(50)) {
+      final leftThreshold = Random().nextInt(50);
+      final rightThreshold = Random().nextInt(100) + 50;
+
+      if (obstacleRect.right > leftThreshold && obstacleRect.right < rightThreshold) {
         shouldAdd = true;
       }
 
@@ -108,7 +113,7 @@ class _MainPageState extends State<MainPage>
         obstacleList.add(
           Obstacle(
             positionY: Random().nextDouble(),
-            offsetX: runDistance + Random().nextInt(100) + 50,
+            offsetX: runDistance + Random().nextInt(150) + 50,
           ),
         );
       });
@@ -122,6 +127,18 @@ class _MainPageState extends State<MainPage>
     if (elapsedSeconds != 0 && elapsedSeconds % 10 == 0) {
       runVelocity += 30;
     }
+  }
+
+  void _restart() {
+    showRestart = false;
+    score = 0;
+    ninja.restart();
+    obstacleList
+      ..clear()
+      ..add(Obstacle(positionY: Random().nextDouble(), offsetX: 200));
+    worldController
+      ..reset()
+      ..forward();
   }
 
   @override
@@ -160,6 +177,14 @@ class _MainPageState extends State<MainPage>
     }
 
     children.add(Counter(score: score));
+
+    if (showRestart) {
+      children.add(
+        GameOverContainer(
+          onRestartTap: _restart,
+        ),
+      );
+    }
 
     return Scaffold(
       body: GestureDetector(
