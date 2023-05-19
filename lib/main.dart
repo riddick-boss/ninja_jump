@@ -5,17 +5,23 @@ import 'package:flutter/services.dart';
 import 'package:ninja_jump/constants.dart';
 import 'package:ninja_jump/counter.dart';
 import 'package:ninja_jump/game_over_container.dart';
+import 'package:ninja_jump/high_score_counter.dart';
 import 'package:ninja_jump/ninja.dart';
 import 'package:ninja_jump/obstacle.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
-  runApp(const MyApp());
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
-  SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft]);
+Future<dynamic> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft]);
+  final prefs = await SharedPreferences.getInstance();
+  runApp(MyApp(prefs: prefs,));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({required this.prefs, super.key});
+
+  final SharedPreferences prefs;
 
   @override
   Widget build(BuildContext context) {
@@ -24,13 +30,15 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MainPage(),
+      home: MainPage(prefs: prefs,),
     );
   }
 }
 
 class MainPage extends StatefulWidget {
-  const MainPage({super.key});
+  const MainPage({required this.prefs, super.key});
+
+  final SharedPreferences prefs;
 
   @override
   State<MainPage> createState() => _MainPageState();
@@ -38,6 +46,7 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage>
     with SingleTickerProviderStateMixin {
+
   late AnimationController worldController;
 
   int score = 0;
@@ -51,6 +60,16 @@ class _MainPageState extends State<MainPage>
 
   final ninja = Ninja();
   final foreverDuration = const Duration(days: 99);
+
+  SharedPreferences get _prefs => widget.prefs;
+
+  Future<void> _setHighScoreIfNecessary(int value) async {
+    if(value > highScore) {
+      await _prefs.setInt(Constants.highScoreKey, value);
+    }
+  }
+
+  int get highScore => _prefs.getInt(Constants.highScoreKey) ?? 0;
 
   @override
   void initState() {
@@ -103,6 +122,7 @@ class _MainPageState extends State<MainPage>
 
       if (obstacleRect.right < 0) {
         score += 1;
+        _setHighScoreIfNecessary(score);
         toRemove.add(obstacle);
       }
     }
@@ -176,7 +196,11 @@ class _MainPageState extends State<MainPage>
       );
     }
 
-    children.add(Counter(score: score));
+    children
+      ..add(Counter(score: score))
+      ..add(
+        HighScoreCounter(highScore: highScore),
+      );
 
     if (showRestart) {
       children.add(
