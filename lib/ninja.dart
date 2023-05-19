@@ -5,7 +5,7 @@ import 'package:ninja_jump/game_object.dart';
 enum NinjaState { running, jumping }
 
 class Ninja extends GameObject {
-  final double width = 90;
+  final double width = 70;
   final double height = 50;
   final movementSpeed = 1.15;
 
@@ -23,7 +23,10 @@ class Ninja extends GameObject {
   }
 
   @override
-  Widget render() => Image.asset("assets/graphics/ninja.jpg");
+  Widget render() => Image.asset(
+        "assets/graphics/ninja.jpg",
+        fit: BoxFit.fill,
+      );
 
   @override
   Rect getRect(Size screenSize, double runDistance) => Rect.fromLTWH(

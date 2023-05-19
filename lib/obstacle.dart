@@ -3,7 +3,6 @@ import 'package:ninja_jump/constants.dart';
 import 'package:ninja_jump/game_object.dart';
 
 class Obstacle extends GameObject {
-
   Obstacle({required this.positionY, required this.offsetX});
 
   double positionY;
@@ -13,7 +12,10 @@ class Obstacle extends GameObject {
   final double height = 35;
 
   @override
-  Widget render() => Image.asset("assets/graphics/ninja_star.png");
+  Widget render() => Image.asset(
+        "assets/graphics/ninja_star.png",
+        fit: BoxFit.fill,
+      );
 
   double _calculateTop(Size screenSize) {
     const boundArea = 0.05;
@@ -29,9 +31,9 @@ class Obstacle extends GameObject {
 
   @override
   Rect getRect(Size screenSize, double runDistance) => Rect.fromLTWH(
-    _calculateX(runDistance),
-    _calculateTop(screenSize),
-    width,
-    height,
-  );
+        _calculateX(runDistance),
+        _calculateTop(screenSize),
+        width,
+        height,
+      );
 }

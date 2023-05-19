@@ -2,6 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ninja_jump/constants.dart';
+import 'package:ninja_jump/counter.dart';
 import 'package:ninja_jump/ninja.dart';
 import 'package:ninja_jump/obstacle.dart';
 
@@ -37,6 +39,7 @@ class _MainPageState extends State<MainPage>
     with SingleTickerProviderStateMixin {
   late AnimationController worldController;
 
+  int score = 0;
   double runDistance = 0;
   double runVelocity = 30;
   Duration lastUpdateCall = Duration.zero;
@@ -79,29 +82,44 @@ class _MainPageState extends State<MainPage>
     final screenSize = MediaQuery.of(context).size;
     final ninjaRect = ninja.getRect(screenSize, runDistance);
 
+    var shouldAdd = false;
+    final toRemove = <Obstacle>[];
+
     for (final obstacle in obstacleList) {
       final obstacleRect = obstacle.getRect(screenSize, runDistance);
 
-      if(ninjaRect.overlaps(obstacleRect)) {
+      if (ninjaRect.overlaps(obstacleRect)) {
         _die();
       }
 
+      if (obstacleRect.right < Random().nextInt(50)) {
+        shouldAdd = true;
+      }
+
       if (obstacleRect.right < 0) {
-        setState(() {
-          obstacleList
-            ..remove(obstacle)
-            ..add(
-              Obstacle(
-                positionY: Random().nextDouble(),
-                offsetX: runDistance + Random().nextInt(100) + 50,
-              ),
-            );
-        });
+        score += 1;
+        toRemove.add(obstacle);
       }
     }
 
+    //max 5 items
+    if (obstacleList.length < Constants.maxObstaclesAtOnce && shouldAdd) {
+      setState(() {
+        obstacleList.add(
+          Obstacle(
+            positionY: Random().nextDouble(),
+            offsetX: runDistance + Random().nextInt(100) + 50,
+          ),
+        );
+      });
+    }
+
+    setState(() {
+      obstacleList.removeWhere(toRemove.contains);
+    });
+
     lastUpdateCall = worldControllerElapsed;
-    if(elapsedSeconds != 0 && elapsedSeconds % 10 == 0) {
+    if (elapsedSeconds != 0 && elapsedSeconds % 10 == 0) {
       runVelocity += 30;
     }
   }
@@ -115,7 +133,10 @@ class _MainPageState extends State<MainPage>
       ),
       Container(
         decoration: const BoxDecoration(
-          image: DecorationImage(image: AssetImage("assets/graphics/Mountains-Transparent.png"), fit: BoxFit.cover,),
+          image: DecorationImage(
+            image: AssetImage("assets/graphics/Mountains-Transparent.png"),
+            fit: BoxFit.cover,
+          ),
         ),
       )
     ];
@@ -137,6 +158,8 @@ class _MainPageState extends State<MainPage>
         ),
       );
     }
+
+    children.add(Counter(score: score));
 
     return Scaffold(
       body: GestureDetector(
