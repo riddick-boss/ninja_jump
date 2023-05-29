@@ -14,6 +14,7 @@ dependencies:
   cupertino_icons: ^1.0.5
   very_good_analysis: ^4.0.0+1
   shared_preferences: ^2.1.1
+  flutter_launcher_icons: ^0.13.1
 
 dev_dependencies:
   flutter_test:
@@ -23,3 +24,9 @@ flutter:
   uses-material-design: true
   assets:
     - assets/graphics/
+
+flutter_icons:
+  image_path_android: "assets/graphics/ninja.png"
+  adaptive_icon_background: "#00ffffff"
+  adaptive_icon_foreground: "assets/graphics/ninja.png"
+  android: true

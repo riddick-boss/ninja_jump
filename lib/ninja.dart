@@ -25,7 +25,7 @@ class Ninja extends GameObject {
 
   @override
   Widget render() => Image.asset(
-        "assets/graphics/ninja.jpg",
+        "assets/graphics/ninja.png",
         fit: BoxFit.fill,
       );
 

@@ -12,7 +12,7 @@ class HighScoreCounter extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     return Positioned(
-      left: screenSize.width - _width,
+      left: screenSize.width - _width - 20, //20 added for curved screens
       top: screenSize.height * Constants.boundArea,
       width: _width,
       height: 150,

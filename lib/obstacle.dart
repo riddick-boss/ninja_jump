@@ -13,7 +13,7 @@ class Obstacle extends GameObject {
 
   @override
   Widget render() => Image.asset(
-        "assets/graphics/ninja_star.jpg",
+        "assets/graphics/ninja_star.png",
         fit: BoxFit.fill,
       );
 
