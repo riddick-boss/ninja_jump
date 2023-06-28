@@ -1,16 +1,32 @@
-# ninja_jump
+# Ninja Jump
 
-A new Flutter project.
+Mobile game for Android and IOS. Take control of a ninja and test your reflexes as you navigate through a obstacle course.
 
-## Getting Started
+#### Game is published on Google Play.
 
-This project is a starting point for a Flutter application.
+<a href="https://play.google.com/store/apps/details?id=abandonedspace.flutter.ninjajump&pli=1">
+    <img alt="Get it on Google Play"
+        height="80"
+        src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" />
+</a>  
 
-A few resources to get you started if this is your first Flutter project:
+## Technologies used
+- Flutter
+- Dart
+- [shared_preferences](https://pub.dev/packages/shared_preferences)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Features
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- **Random obstacles**: Position for each obstacle is generated randomly, so every game turn is unique
+- **Score counter**: High score is saved using share_preferences
+- **Difficulty increase**: Speed increases with time, making game more and more difficult
+
+## Screenshots
+
+| ![Game](/screenshots/game_1.png) | ![Game over](/screenshots/game_2.png) |
+|-|-|
+
+## Contact
+
+- [kremienowski33@gmail.com](mailto:kremienowski33@gmail.com)
+- [LinkedIn](https://www.linkedin.com/in/pawe%C5%82-kremienowski/)

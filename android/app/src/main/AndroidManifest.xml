@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.ninja_jump">
+    package="abandonedspace.flutter.ninjajump">
    <application
-        android:label="ninja_jump"
+        android:label="Ninja Jump"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
